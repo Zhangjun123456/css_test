@@ -1,0 +1,48 @@
+<html>
+<head>
+    <title>lenght unit in css</title>
+    <style type="text/css">
+        .container {padding:5px; border:solid 1px #888; margin-bottom: 5px; }
+        .unit {margin: 0px; margin-bottom: 2px; padding: 0px; border: solid 10px #888; }
+        .unit1 {margin: 0px; margin-bottom: 2px; padding: 0px; border: solid 1px #888; }
+        .len1In {width: 1in; }
+        .len1cm {width: 1cm; }
+        .len10mm {width: 10mm; }
+        .notVisible { position: absolute; left: -1000px; top:-1000px; }
+    </style>
+    <script type="text/javascript" src="javascripts/jquery-2.0.3.min.js"></script>
+    <script type="text/javascript">
+        /*jslint nomen: true, debug: true, evil: true, vars: true, browser:true, devel:true, indent:4 */
+        function dpi() {
+            var $sampleDiv = $("#sampleDiv");
+            if ($sampleDiv.length === 0) {
+                $sampleDiv = $("<div id='sampleDiv' class='notVisible len1In'/>").appendTo(document.body);
+            }
+            return $sampleDiv.width();
+        }
+        function inToPx() {
+            return dpi();
+        }
+
+        $(function () {
+            var dpiV = inToPx();
+            $("#intopx").text(dpiV);
+        });
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h3>test box</h3>
+        <div class="unit len1In">1 in</div>
+        <div class="unit len1cm">1 cm</div>
+        <div class="unit1 len1cm">1 cm</div>
+        <div class="unit len10mm">10 mm</div>
+    </div>
+    <div class="result container">
+        <div>
+            <label for="intopx">in to px</label>
+            <div id="intopx"></div>
+        </div>
+    </div>
+</body>
+</html>
