@@ -6,27 +6,59 @@
         .unit {margin: 0px; margin-bottom: 2px; padding: 0px; border: solid 10px #888; }
         .unit1 {margin: 0px; margin-bottom: 2px; padding: 0px; border: solid 1px #888; }
         .len1In {width: 1in; }
+        .len5In {width: 5in; }
         .len1cm {width: 1cm; }
         .len10mm {width: 10mm; }
+        .len400px {width: 400px; }
         .notVisible { position: absolute; left: -1000px; top:-1000px; }
     </style>
     <script type="text/javascript" src="javascripts/jquery-2.0.3.min.js"></script>
+    <script type="text/javascript" src="javascripts/underscore-min.js"></script>
+    <script type="text/javascript" src="javascripts/common.js"></script>
     <script type="text/javascript">
         /*jslint nomen: true, debug: true, evil: true, vars: true, browser:true, devel:true, indent:4 */
-        function dpi() {
-            var $sampleDiv = $("#sampleDiv");
-            if ($sampleDiv.length === 0) {
-                $sampleDiv = $("<div id='sampleDiv' class='notVisible len1In'/>").appendTo(document.body);
-            }
-            return $sampleDiv.width();
-        }
+        var zp_util;
         function inToPx() {
-            return dpi();
+            return zp_util.dpi();
         }
-
+        function outputValue(valueObj, parentNode) {
+            var id = valueObj.id;
+            var value = valueObj.value;
+            var name = valueObj.name || valueObj.id;
+            if (!parentNode) {
+                parentNode = $(".result");
+            }
+            var str = '<div>' +
+                '<label>' + name + '<\/label>' +
+                '<div>' + value + '<\/div>' +
+                '<\/div>';
+            $(str).appendTo(parentNode);
+        }
         $(function () {
             var dpiV = inToPx();
             $("#intopx").text(dpiV);
+            $("#ptotpx").text(dpiV / 72);
+            $("#bodyWidth").text(document.body.offsetWidth);
+            $("#screenWidth").text(screen.height);
+            var winSizePropNames = ["innerHeight", "innerWidth", "outerHeight", "outerWidth", "screenLeft", "screenTop", "screenX", "screenY"];
+
+            var obj = {};
+            _.each(winSizePropNames, function (ite) {
+                obj[ite] = window[ite];
+            });
+            outputValue({
+                "id" : "window_size_Obj",
+                "value" : JSON.stringify(obj)
+            });
+            /*
+            outputValue({
+                "id" : "body",
+                "value" : JSON.stringify(document.body)
+            });*/
+            outputValue({
+                "id" : "screen",
+                "value": JSON.stringify(screen)
+            });
         });
     </script>
 </head>
@@ -37,11 +69,17 @@
         <div class="unit len1cm">1 cm</div>
         <div class="unit1 len1cm">1 cm</div>
         <div class="unit len10mm">10 mm</div>
+        <div class="unit len5In">10 in</div>
+        <div class="unit len400px">400Px</div>
     </div>
     <div class="result container">
         <div>
             <label for="intopx">in to px</label>
             <div id="intopx"></div>
+        </div>
+        <div>
+            <label for="pttopx">pt to px</label>
+            <div id="ptotpx"></div>
         </div>
     </div>
 </body>
